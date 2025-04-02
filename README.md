@@ -2,7 +2,7 @@
 title: "Análisis de datos ómicos (M0-157) Primera prueba de evaluación continua"
 subtitle: "Código R para la exploración de los datos debidamente comentado"
 author: "Gabriel Peña Peña"
-date: "2024-04-02"
+date: "2025_04_02"
 output:
 ---
 
@@ -109,6 +109,18 @@ tail(colData(se))
 # Resumen de los datos de metabolitos
 summary(t(assays(se)$metabolitos))
 ```
+Se representa el summary de los tres priemros metabolitos como ejemplo
+
+```{r}
+# Se seleccionan los primeros 3 metabolitos
+sub_metabolitos <- assays(se)$metabolitos[1:3, ]
+
+# Se transpone para que cada fila corresponda a un paciente
+resumen <- summary(t(sub_metabolitos))
+
+# Se convierte a tabla
+knitr::kable(resumen, caption = "Resumen estadístico de concentraciones para los primeros tres metabolitos.")
+```
 
 Se observa cómo están distribuidos los grupos de pérdida muscular en la muestra, entregando una idea del balance de clases.
 
@@ -121,6 +133,17 @@ tabla_1
 # Se visualiza la distribución porcentual de la variable 'MuscleLoss'
 tabla_2  <- round(prop.table(tabla_1) * 100, 2)
 tabla_2
+```
+
+```{r}
+# Se crea la tabla como data.frame
+tabla_muscleloss <- data.frame(
+  Condición = names(tabla_2),
+  Porcentaje = as.numeric(tabla_2)
+)
+
+# Se muesstra la tabla
+knitr::kable(tabla_muscleloss, caption = "Distribución porcentual de la variable MuscleLoss.")
 ```
 
 ## Concentración de metabolitos
@@ -193,9 +216,13 @@ top_var_data_scaled <- t(scale(t(top_var_data)))
 
 # Se genera un mapa de valor
 heatmap(top_var_data_scaled,
-        main = "Metabolitos más variables",
         Colv = NA,
-        scale = "none")
+        scale = "none",
+        main = "Metabolitos más variables entre pacientes",
+        labCol = NA)
+
+# Se agregan etiquetas a los ejes
+title(xlab = "Pacientes", ylab = "Metabolitos más variables")
 ```
 
 ## Analisis ANOVA para comparar grupos
