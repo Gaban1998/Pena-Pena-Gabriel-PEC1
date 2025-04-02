@@ -2,7 +2,7 @@
 title: "Análisis de datos ómicos (M0-157) Primera prueba de evaluación continua"
 subtitle: "Código R para la exploración de los datos debidamente comentado"
 author: "Gabriel Peña Peña"
-date: "`r Sys.Date()`"
+date: "2024-04-02"
 output:
 ---
 
